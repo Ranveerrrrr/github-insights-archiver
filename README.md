@@ -9,30 +9,22 @@
 ## Overview
 
 GItHub Insights Archiver is a tool that archives GitHub repository traffic analytics and generates a local dashboard for long-term tracking.
-
 By default, GitHub only retains 14 days of traffic data in the repository insights page. After this period, views, clones, and referrer analytics are permanently lost.
-
 This project automates the collection and archiving of that data so developers can maintain long-term insights about their projects.
 
 ## Problem
-
 GitHub repository insights only retain traffic data for 14 days. After that:
-
 - Repository views are no longer available
 - Repository clone data is removed
 - Referrer site analytics disappear
- - Popular content insights are lost
+- Popular content insights are lost
 
 Developers therefore lose historical traffic data that could be useful for growth analysis, marketing, and project evaluation.
 
 ## Solution
-
 GItHub Insights Archiver periodically fetches traffic data using the GitHub API and stores it locally.
-
 The collected data can then be visualized in a local analytics dashboard, allowing long-term repository traffic analysis beyond GitHub's native 14-day limit.
-
 ## Features
-
 - Interactive repository traffic graphs
 - Views and clone tracking
 - Referring site analytics
@@ -43,7 +35,6 @@ The collected data can then be visualized in a local analytics dashboard, allowi
 - Automated data archiving
 
 ## Architecture
-
 ```
 GitHub API
     |
@@ -54,21 +45,18 @@ GitHub API
  traffic.json ---> stored analytics
     |
     v
- dashboard.html ---> shows the data
+ Dashboard/index.html ---> shows the data
 ```
 ## Project Structure
-
-
 ```
 Github-Insight-Archiver/
 |-- tracker.py       # Fetches GitHub traffic data
 |-- traffic.json      # Stored traffic history
 |-- config.json      # GitHub API token
-|-- dashboard.html    # Generated analytics dashboard
+|-- Dashboard/index.html    # Generated analytics dashboard
 ```
 
 ## Installation
-
 ```bash
 git clone https://github.com/Ranveerrrrr/Github-Insights-Archiver.git
 cd Github-Insights-Archiver
@@ -79,9 +67,7 @@ pip install -r requirements.txt
 Create a GitHub Personal Access Token with the following permissions:
 `repo`
 `read:org`
-
 Add the token to config.json:
-
 ```json
 {
   "token": "YOUR_GITHUB_TOKEN"
@@ -89,15 +75,12 @@ Add the token to config.json:
 ```
 
 ## Usage
-
 Collect repository traffic data:
-
 ```bash
 python tracker.py
 ```
-
-Open the generated dashboard:
-`dashboard.html`
+Open the dashboard:
+`Dashboard/index.html`
 
 ## Dashboard Preview
 <img width="1218" height="995" alt="image" src="https://github.com/user-attachments/assets/fbcbe453-e880-410b-bae7-0cf84925197c" />
@@ -105,9 +88,7 @@ Open the generated dashboard:
 
 
 ## Development Status
-
 This project is currently under active development. Planned improvements include:
-
 - Repository search and filtering
 - Traffic spike detection
 - GitHub-style heatmap visualization
@@ -116,7 +97,6 @@ This project is currently under active development. Planned improvements include
 - API integration for external analytics tools
 
 ## Developer
-
 Ranveer(Bugatsec)<br>
 Website: https://bugatsec.dev<br>
 GitHub: https://github.com/Ranveerrrrrr<br>
