@@ -1,4 +1,10 @@
 # GitHub Traffic Archiver
+![Python](https://img.shields.io/badge/Python-3.x-blue?style=for-the-badge&logo=python)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
+![Tracker.py](https://img.shields.io/badge/Tracker.py-Analytics-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-active-success?style=for-the-badge)
+![Maintenance](https://img.shields.io/badge/maintained-yes-brightgreen?style=for-the-badge)
+![GitHub license](https://img.shields.io/github/license/Ranveerrrrr/Github-Insights-Archiver?style=for-the-badge)
 
 A lightweight tool for archiving GitHub repository traffic data (beyond the 14-day limit). It allows users to build long-term analytics by periodically collecting data and visualizing it locally.
 
