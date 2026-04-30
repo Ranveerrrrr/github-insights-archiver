@@ -254,9 +254,3 @@ save_json(PATHS_HISTORY_FILE, paths_history)
 save_json(STARS_FILE, stars_data)
 
 print("\n[OK] CLEAN analytics dataset updated")
-
-# ------------------ HEALTHCHECK ------------------
-try:
-    requests.get("https://hc-ping.com/0e103d7d-2736-4001-82fa-73756dd225f7", timeout=5)
-except:
-    pass
