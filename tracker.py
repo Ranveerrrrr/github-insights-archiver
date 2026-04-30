@@ -2,7 +2,8 @@ import requests
 import json
 import os
 import time
-from datetime import datetime
+import sys
+from datetime import datetime, timezone
 
 BASE_DIR = "Dashboard"
 os.makedirs(BASE_DIR, exist_ok=True)
@@ -51,6 +52,34 @@ def safe_get(url, headers):
         pass
     return {}
 
+def fetch_all_repos():
+    all_repos = []
+    page = 1
+
+    while True:
+        data = safe_get(
+            f"https://api.github.com/user/repos?per_page=100&page={page}&sort=updated",
+            HEADERS
+        )
+
+        if not isinstance(data, list) or not data:
+            break
+
+        all_repos.extend(data)
+        page += 1
+
+    return all_repos
+
+def repo_metadata(repo):
+    return {
+        "owner": repo["owner"]["login"],
+        "full_name": repo["full_name"],
+        "url": repo["html_url"],
+        "description": repo.get("description") or "No description",
+        "stars": repo.get("stargazers_count", 0),
+        "forks": repo.get("forks_count", 0)
+    }
+
 # ------------------ LOAD DATA ------------------
 old_data = load_json(OUTPUT_FILE, [])
 snapshots = load_json(SNAPSHOT_FILE, [])
@@ -67,10 +96,11 @@ ref_keys = {(r["repo"], r["timestamp"]) for r in ref_history}
 path_keys = {(p["repo"], p["timestamp"]) for p in paths_history}
 
 # ------------------ FETCH REPOS ------------------
-repos = safe_get(
-    "https://api.github.com/user/repos?per_page=100",
-    HEADERS
-)
+repos = fetch_all_repos()
+
+if not repos:
+    print("[ERROR] No repositories were fetched. Keeping existing dashboard data unchanged.")
+    sys.exit(1)
 
 # ------------------ PROCESS ------------------
 for repo in repos:
@@ -99,7 +129,7 @@ for repo in repos:
         HEADERS
     )
 
-    now = datetime.utcnow().replace(microsecond=0).isoformat()
+    now = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
     # ------------------ CLEAN REFERRERS ------------------
     clean_referrers = []
@@ -123,11 +153,14 @@ for repo in repos:
     repo_data = {
         "name": name,
         "views": views.get("views", []),
-        "clones": clones.get("clones", [])
+        "clones": clones.get("clones", []),
+        **repo_metadata(repo)
     }
 
     if name in old_data_map:
         existing = old_data_map[name]
+
+        existing.update(repo_metadata(repo))
 
         existing_views = {v["timestamp"]: v for v in existing.get("views", [])}
         for v in repo_data["views"]:
@@ -220,7 +253,7 @@ save_json(REFERRER_HISTORY_FILE, ref_history)
 save_json(PATHS_HISTORY_FILE, paths_history)
 save_json(STARS_FILE, stars_data)
 
-print("\n[✔] CLEAN analytics dataset updated")
+print("\n[OK] CLEAN analytics dataset updated")
 
 # ------------------ HEALTHCHECK ------------------
 try:
